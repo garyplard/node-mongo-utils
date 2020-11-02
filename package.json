@@ -1,0 +1,35 @@
+{
+  "name": "node-mongo-utils",
+  "version": "0.0.1",
+  "description": "Mongo utils for node",
+  "main": "index.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/garyplard/node-mongo-utils.git"
+  },
+  "keywords": [
+    "mongo",
+    "node",
+    "typescript"
+  ],
+  "author": "Gary Plard",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/garyplard/node-mongo-utils/issues"
+  },
+  "homepage": "https://github.com/garyplard/node-mongo-utils",
+  "dependencies": {
+    "child_process": "1.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.6",
+    "typescript": "~3.9.7"
+  },
+  "engines": {
+    "node": "^13.7.0",
+    "yarn": "^1.19.1"
+  },
+  "chpm": [
+    "yarn"
+  ]
+}
