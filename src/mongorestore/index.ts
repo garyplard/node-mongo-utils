@@ -14,8 +14,12 @@ export interface mongorestoreProps {
 }
 
 export const mongorestore = ({removeArchive, ...props}: mongorestoreProps) => {
-  const options = Object.entries(props).map(([key, value]) => key === 'ssl' && value ? `--${key}` : `--${key}="${value}"`)
-  spawn('mongorestore', options)
+  const options = Object.entries(props).map(([key, value]) => {
+    if (value) return key === 'ssl' ? `--${key}` : `--${key}="${value}"`
+    else return ''
+  }).filter(option => Boolean(option))
+  const { name } = require('../../package.json')
+  spawn(`${process.cwd()}/node_modules/${name}/bin/mongorestore`, options)
     .on('exit', () => {
       removeArchive && spawn('rm', [props.archive])
     })

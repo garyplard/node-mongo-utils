@@ -12,6 +12,10 @@ export interface mongodumpProps {
 }
 
 export const mongodump = (props: mongodumpProps) => {
-  const options = Object.entries(props).map(([key, value]) => key === 'ssl' && value ? `--${key}` : `--${key}="${value}"`)
-  return spawn('mongodump', options)
+  const options = Object.entries(props).map(([key, value]) => {
+    if (value) return key === 'ssl' ? `--${key}` : `--${key}="${value}"`
+    else return ''
+  }).filter(option => Boolean(option))
+  const { name } = require('../../package.json')
+  return spawn(`${process.cwd()}/node_modules/${name}/bin/mongodump`, options)
 }

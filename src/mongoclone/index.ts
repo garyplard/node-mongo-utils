@@ -1,17 +1,22 @@
 import { mongodump, mongodumpProps } from "../mongodump"
 import { mongorestore, mongorestoreProps } from "../mongorestore"
 
-export interface mongocloneProps {
-  source: Omit<mongodumpProps, 'archive'>;
-  target: Omit<mongorestoreProps, 'archive' | 'removeArchive'>;
-}
-
-export const mongoclone = ({ source, target }: mongocloneProps) => {
+export const mongoclone = (
+  source: Omit<mongodumpProps, 'archive'>, 
+  target: Omit<mongorestoreProps, 'archive' | 'removeArchive' | 'nsFrom'>
+) => {
   const archive = Date.now().toString()
-  mongodump({ ...source, archive })
-    .on('exit', (code, signal) => {
+  mongodump({ 
+    ...source,
+    archive
+  }).on('exit', (code, signal) => {
       if (!code && !signal) {
-        mongorestore({ ...target, archive, removeArchive: true })
+        mongorestore({ 
+          ...target,
+          archive,
+          nsFrom: `${source.db}.*`,
+          removeArchive: true
+        })
       }
     })
 }
