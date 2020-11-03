@@ -1,4 +1,5 @@
 import { spawn } from 'child_process'
+import { resolve as resolveAbsolute } from 'path'
 
 export interface mongodumpProps {
   host?: string;
@@ -16,6 +17,6 @@ export const mongodump = (props: mongodumpProps) => {
     if (value) return key === 'ssl' ? `--${key}` : `--${key}="${value}"`
     else return ''
   }).filter(option => Boolean(option))
-  const { name } = require('../../package.json')
-  return spawn(`${process.cwd()}/node_modules/${name}/bin/mongodump`, options)
+  const binPath = resolveAbsolute(require.resolve('../../package.json')).replace('package.json', 'bin/mongodump')
+  return spawn(binPath, options)
 }
