@@ -21,6 +21,7 @@ export const mongorestore = ({removeArchive, ...props}: mongorestoreProps) => {
   }).filter(option => Boolean(option))
   const { name } = require('../../package.json')
   const packagePath = getInstalledPathSync(name, { local: true })
+  console.log(`${packagePath}/bin/mongorestore ${options.join(' ')}`)
   spawn(`${packagePath}/bin/mongorestore`, options)
     .on('exit', () => {
       removeArchive && spawn('rm', [props.archive])

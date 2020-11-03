@@ -19,5 +19,6 @@ export const mongodump = (props: mongodumpProps) => {
   }).filter(option => Boolean(option))
   const { name } = require('../../package.json')
   const packagePath = getInstalledPathSync(name, { local: true })
+  console.log(`${packagePath}/bin/mongodump ${options.join(' ')}`)
   return spawn(`${packagePath}/bin/mongodump`, options)
 }

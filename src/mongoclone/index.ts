@@ -17,6 +17,8 @@ export const mongoclone = (
           nsFrom: `${source.db}.*`,
           removeArchive: true
         })
+      } else {
+        console.log({ code, signal })
       }
     })
 }
