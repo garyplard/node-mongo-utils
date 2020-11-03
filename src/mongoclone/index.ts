@@ -19,18 +19,6 @@ export const mongoclone = (
           nsFrom: `${source.db}.*`,
           removeArchive: true
         })
-      } else {
-        const { name } = require('../../package.json')
-        const packagePath = getInstalledPathSync(name, { local: true })
-        console.log({ code, signal })
-        throw new Error(JSON.stringify({ 
-          commands: [
-            `${packagePath}/bin/mongodump ${parseOptions({ ...source, archive }).join(' ')}`,
-            `${packagePath}/bin/mongorestore ${parseOptions({ ...target, archive, nsFrom: `${source.db}.*` }).join(' ')}`
-          ],
-          code, 
-          signal
-        }))
       }
     })
 }

@@ -17,6 +17,12 @@ export const mongodump = (props: mongodumpProps) => {
   const options = parseOptions(props)
   const { name } = require('../../package.json')
   const packagePath = getInstalledPathSync(name, { local: true })
-  console.log(`${packagePath}/bin/mongodump ${options.join(' ')}`)
-  return spawn(`${packagePath}/bin/mongodump`, options)
+  try {
+    return spawn(`${packagePath}/bin/mongodump`, options)
+  } catch (error) {
+    throw new Error(JSON.stringify({
+      error,
+      command: `${packagePath}/bin/mongodump ${options.join(' ')}`
+    }))
+  }
 }
