@@ -15,19 +15,13 @@ export interface mongorestoreProps {
   removeArchive?: boolean;
 }
 
-export const mongorestore = ({removeArchive, ...props}: mongorestoreProps) => {
+export const mongorestore = ({removeArchive, ...props}: mongorestoreProps, onError?: (error: any) => void) => {
   const options = parseOptions(props)
   const { name } = require('../../package.json')
   const packagePath = getInstalledPathSync(name, { local: true })
-  try {
-    spawn(`${packagePath}/bin/mongorestore`, options)
-      .on('exit', () => {
-        removeArchive && spawn('rm', [props.archive])
-      })
-  } catch (error) {
-    throw new Error(JSON.stringify({
-      error,
-      command: `${packagePath}/bin/mongorestore ${options.join(' ')}`
-    }))
-  }
+  spawn(`${packagePath}/bin/mongorestore`, options)
+    .on('exit', () => {
+      removeArchive && spawn('rm', [props.archive])
+    })
+    .on('error', (err) => onError?.(err))
 }

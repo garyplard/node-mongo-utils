@@ -5,20 +5,23 @@ import { parseOptions } from "../utils"
 
 export const mongoclone = (
   source: Omit<mongodumpProps, 'archive'>, 
-  target: Omit<mongorestoreProps, 'archive' | 'removeArchive' | 'nsFrom'>
+  target: Omit<mongorestoreProps, 'archive' | 'removeArchive' | 'nsFrom'>,
+  onError?: (error: any) => void
 ) => {
   const archive = Date.now().toString()
   mongodump({ 
     ...source,
     archive
-  }).on('exit', (code, signal) => {
+  }, onError).on('exit', (code, signal) => {
       if (!code && !signal) {
         mongorestore({ 
           ...target,
           archive,
           nsFrom: `${source.db}.*`,
           removeArchive: true
-        })
+        }, onError)
+      } else {
+        onError?.({ code, signal })
       }
     })
 }

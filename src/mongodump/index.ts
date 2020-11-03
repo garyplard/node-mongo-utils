@@ -13,16 +13,9 @@ export interface mongodumpProps {
   password?: string;
 }
 
-export const mongodump = (props: mongodumpProps) => {
+export const mongodump = (props: mongodumpProps, onError?: (error: any) => void) => {
   const options = parseOptions(props)
   const { name } = require('../../package.json')
   const packagePath = getInstalledPathSync(name, { local: true })
-  try {
-    return spawn(`${packagePath}/bin/mongodump`, options)
-  } catch (error) {
-    throw new Error(JSON.stringify({
-      error,
-      command: `${packagePath}/bin/mongodump ${options.join(' ')}`
-    }))
-  }
+  return spawn(`${packagePath}/bin/mongodump`, options).on('error', (err) => onError?.(err))
 }
