@@ -1,5 +1,5 @@
 import { spawn } from 'child_process'
-import { resolve as resolveAbsolute } from 'path'
+import { getInstalledPathSync } from 'get-installed-path'
 
 export interface mongodumpProps {
   host?: string;
@@ -17,6 +17,7 @@ export const mongodump = (props: mongodumpProps) => {
     if (value) return key === 'ssl' ? `--${key}` : `--${key}="${value}"`
     else return ''
   }).filter(option => Boolean(option))
-  const binPath = resolveAbsolute(require.resolve('../../package.json')).replace('package.json', 'bin/mongodump')
-  return spawn(binPath, options)
+  const { name } = require('../../package.json')
+  const packagePath = getInstalledPathSync(name, { local: true })
+  return spawn(`${packagePath}/bin/mongodump`, options)
 }
