@@ -15,10 +15,7 @@ export interface mongorestoreProps {
 }
 
 export const mongorestore = ({removeArchive, ...props}: mongorestoreProps, onError?: (error: any) => void) => {
-  const options = parseOptions(props)
-  spawn(binaries.mongorestore, options)
-    .on('exit', () => {
-      removeArchive && spawn('rm', [props.archive])
-    })
+  spawn(binaries.mongorestore, parseOptions(props))
+    .on('exit', () => removeArchive && spawn('rm', [props.archive]))
     .on('error', (err) => onError?.(err))
 }

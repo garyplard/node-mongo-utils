@@ -12,7 +12,6 @@ export interface mongodumpProps {
   password?: string;
 }
 
-export const mongodump = (props: mongodumpProps, onError?: (error: any) => void) => {
-  const options = parseOptions(props)
-  return spawn(binaries.mongodump, options).on('error', (err) => onError?.(err))
-}
+export const mongodump = (props: mongodumpProps, onError?: (error: any) => void) => (
+  spawn(binaries.mongodump, parseOptions(props)).on('error', (err) => onError?.(err))
+)
