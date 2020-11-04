@@ -1,6 +1,5 @@
 import { spawn } from 'child_process'
-import { getInstalledPathSync } from 'get-installed-path'
-import { parseOptions } from '../utils'
+import { binaries, parseOptions } from '..'
 
 export interface mongorestoreProps {
   host?: string;
@@ -17,9 +16,7 @@ export interface mongorestoreProps {
 
 export const mongorestore = ({removeArchive, ...props}: mongorestoreProps, onError?: (error: any) => void) => {
   const options = parseOptions(props)
-  const { name } = require('../../package.json')
-  const packagePath = getInstalledPathSync(name, { local: true })
-  spawn(`${packagePath}/bin/mongorestore`, options)
+  spawn(binaries.mongorestore, options)
     .on('exit', () => {
       removeArchive && spawn('rm', [props.archive])
     })

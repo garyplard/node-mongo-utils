@@ -1,7 +1,5 @@
-import { getInstalledPathSync } from "get-installed-path"
 import { mongodump, mongodumpProps } from "../mongodump"
 import { mongorestore, mongorestoreProps } from "../mongorestore"
-import { parseOptions } from "../utils"
 
 export const mongoclone = (
   source: Omit<mongodumpProps, 'archive'>, 

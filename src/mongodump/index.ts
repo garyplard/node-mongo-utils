@@ -1,6 +1,5 @@
 import { spawn } from 'child_process'
-import { getInstalledPathSync } from 'get-installed-path'
-import { parseOptions } from '../utils'
+import { binaries, parseOptions } from '..'
 
 export interface mongodumpProps {
   host?: string;
@@ -15,7 +14,5 @@ export interface mongodumpProps {
 
 export const mongodump = (props: mongodumpProps, onError?: (error: any) => void) => {
   const options = parseOptions(props)
-  const { name } = require('../../package.json')
-  const packagePath = getInstalledPathSync(name, { local: true })
-  return spawn(`${packagePath}/bin/mongodump`, options).on('error', (err) => onError?.(err))
+  return spawn(binaries.mongodump, options).on('error', (err) => onError?.(err))
 }
